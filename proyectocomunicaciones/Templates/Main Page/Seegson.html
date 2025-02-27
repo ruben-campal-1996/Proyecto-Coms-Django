@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido a Seegson</title>
+
+</head>
+<body>
+    <header>
+        <h1>Bienvenido a Seegson, {{ username }}!</h1>
+        <nav>
+            <form action="{% url 'logout' %}" method="POST">
+                {% csrf_token %}
+                <button type="submit">Cerrar sesión</button>
+            </form>
+        </nav>
+    </header>
+
+    <section>
+        <h2>Contenido exclusivo para usuarios registrados</h2>
+        <p>Este es el contenido principal al que solo puedes acceder si has iniciado sesión correctamente.</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Seegson, todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
