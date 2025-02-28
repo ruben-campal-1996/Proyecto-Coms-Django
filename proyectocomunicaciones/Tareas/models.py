@@ -9,9 +9,12 @@ class Tarea(models.Model):
 
     id_tarea = models.AutoField(primary_key=True)
     tarea = models.CharField(max_length=255)
-    usuarios_asignados = models.ManyToManyField('UsersAutentication.Usuario', related_name='tareas_asignadas')
+    usuarios_asignados = models.ManyToManyField('UsersAutentication.Usuario', related_name='tareas_asignadas_usuario')  # Cambiar related_name
     estado = models.CharField(max_length=20, choices=ESTADOS)
-    proyecto = models.ForeignKey('Proyectos.Proyecto', on_delete=models.CASCADE, related_name='tareas')
+
+    # Relación de clave foránea con Proyecto
+    proyecto = models.ForeignKey('Proyectos.Proyecto', on_delete=models.CASCADE, related_name="tareas_del_proyecto")
 
     def __str__(self):
         return self.tarea
+

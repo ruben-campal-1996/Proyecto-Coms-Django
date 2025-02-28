@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-from django.shortcuts import render
-
-# Create your views here.
-=======
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
@@ -84,4 +79,4 @@ def logout_view(request):
 def seegson_view(request):
     username = request.user.username
     return render(request, 'Main Page/Seegson.html', {'username': username})
->>>>>>> rama-users-autentication
+
