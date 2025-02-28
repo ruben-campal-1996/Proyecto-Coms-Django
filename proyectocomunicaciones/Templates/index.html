@@ -1,0 +1,28 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seegson</title>
+</head>
+<body>
+    <header>
+        <h1>Bienvenido al Sistema de Comunicaciones Seegson.</h1>
+        <h3>Mediante nuestro sistema de trabajo, te ayudamos a organizar mejor tus proyectos, pudiendo asignar tareas y plazos de entrega.</h3>
+        <p>¿Ya tienes una cuenta? Sino, crea una nueva.</p>
+    </header>
+
+    <main>
+        <div>
+            <p><a href="{% url 'login' %}">Iniciar sesión</a></p>
+        </div>
+
+        <div>
+            <p><a href="{% url 'register' %}">Registrarse</a></p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Sistema de Comunicaciones</p>
+    </footer>
+</body>
+</html>
