@@ -10,7 +10,7 @@ class Usuario(models.Model):
     id_user = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255)
     rol = models.CharField(max_length=20, choices=ROLES)
-    proyectos = models.ManyToManyField('Proyectos.Proyecto', related_name='usuarios_asociados')  # Cambia el related_name
+    #proyectos = models.ManyToManyField('Proyectos.Proyecto', related_name='usuarios_asociados')  # Cambia el related_name
     
     
     def __str__(self):
