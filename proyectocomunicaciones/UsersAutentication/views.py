@@ -78,5 +78,5 @@ def logout_view(request):
 @login_required  # Aseguramos que solo los usuarios logueados puedan acceder
 def seegson_view(request):
     username = request.user.username
-    return render(request, 'Main Page/Seegson.html', {'username': username})
+    return render(request, 'MainPage/Seegson.html', {'username': username})
 

@@ -19,6 +19,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('UsersAutentication.urls')),  # Redirige a las URLs de UsersAutentication
+    path('', include('UsersAutentication.urls')),
+    path('Seegson/', include('Proyectos.urls')), # Rutas para la aplicación de proyectos
+    path('perfil/', include('UsersAutentication.urls')),  # Rutas para la aplicación de usuarios  # Redirige a las URLs de UsersAutentication
 ]
 

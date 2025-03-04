@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyectos - Seegson</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Banda superior con botones -->
+    <div class="top-band">
+        <div class="button-container">
+            <a href="/proyectos" class="btn">Proyectos</a>
+            <a href="/tareas" class="btn">Tareas</a>
+            <a href="/mi-perfil" class="btn">Mi perfil</a>
+        </div>
+    </div>
+
+    <header>
+        <h1>Bienvenido a la sección de Proyectos</h1>
+    </header>
+
+    <section>
+        <h2>Proyectos Recientes</h2>
+        <div class="box">
+            <ul>
+                {% for proyecto in proyectos_recientes %}
+                    <li>
+                        <strong>{{ proyecto.titulo }}</strong><br>
+                        <span>{{ proyecto.descripcion }}</span><br>
+                        <em>Fecha inicio: {{ proyecto.fecha_inicio }} | Fecha finalización: {{ proyecto.fecha_finalizacion }}</em>
+                    </li>
+                {% empty %}
+                    <li>No hay proyectos recientes disponibles.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>Tareas Asignadas</h2>
+        <div class="box">
+            <ul>
+                {% for tarea in tareas_asignadas %}
+                    <li>
+                        <strong>{{ tarea.tarea }}</strong><br>
+                        <em>Estado: {{ tarea.estado }}</em><br>
+                        <em>Proyecto: {{ tarea.proyecto.titulo }}</em>
+                    </li>
+                {% empty %}
+                    <li>No tienes tareas asignadas actualmente.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Seegson, todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>

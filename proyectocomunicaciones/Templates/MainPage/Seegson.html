@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido a Seegson</title>
+    <style>
+        /* Banda superior */
+        .top-band {
+            width: 100vw; /* Usa el ancho completo de la pantalla */
+            height: 50px;
+            background-color: #333; /* Color oscuro */
+            color: white;
+            display: flex;
+            justify-content: flex-end; /* Alinea los botones a la derecha */
+            align-items: center;
+            position: fixed; /* Fija la banda en la parte superior */
+            top: 0; /* Alinea con la parte superior de la pantalla */
+            left: 0;
+            z-index: 1000; /* Asegura que esté por encima del resto del contenido */
+            padding-right: 20px; /* Espacio adicional a la derecha */
+        }
+
+        .top-band .button-container {
+            display: flex;
+            justify-content: flex-end; /* Alinea los botones hacia la derecha */
+            align-items: center;
+        }
+
+        .top-band .btn {
+            background-color: #333; /* Fondo oscuro como la banda */
+            color: white;
+            padding: 10px 20px;
+            margin: 0 10px; /* Espacio entre los botones */
+            border: 1px solid #555; /* Borde ligeramente más claro */
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none; /* Elimina subrayado */
+            font-size: 16px;
+        }
+
+        .top-band .btn:hover {
+            background-color: #444; /* Fondo ligeramente más claro al pasar el mouse */
+            border-color: #666; /* Cambio de borde al pasar el mouse */
+        }
+
+        /* Asegura que el contenido principal no se superponga a la banda */
+        body {
+            padding-top: 70px; /* Añade espacio suficiente para que no se superponga la banda negra */
+        }
+
+        /* Recuadros de Proyectos y Tareas */
+        .box {
+            width: 45%;
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Estilo para la burbuja */
+        .bubble {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Desplegable */
+        .dropdown {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 200px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            z-index: 1000;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .dropdown a:hover {
+            background-color: #f0f0f0;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Banda superior con botones -->
+    <div class="top-band">
+        <div class="button-container">
+            <a href="{% url 'proyectos:proyectos' %}" class="btn">Proyectos</a>
+            <a href="{% url 'proyectos:tareas' %}" class="btn">Tareas</a>
+            <a href="{% url 'proyectos:mi_perfil' %}" class="btn">Mi perfil</a>
+        </div>
+    </div>
+
+    <header>
+        <h1>Bienvenido a Seegson, {{ username }}!</h1>
+        <nav>
+            <form action="{% url 'logout' %}" method="POST">
+                {% csrf_token %}
+                <button type="submit">Cerrar sesión</button>
+            </form>
+        </nav>
+    </header>
+
+    <!-- Recuadros para Proyectos y Tareas -->
+    <section class="container">
+        <div class="box">
+            <h3>Proyectos</h3>
+            <p>Este es el área donde se encuentran tus proyectos.</p>
+        </div>
+        <div class="box">
+            <h3>Tareas</h3>
+            <p>Aquí podrás gestionar todas tus tareas asignadas.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Seegson, todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Burbuja desplegable -->
+    <div class="bubble" onclick="toggleDropdown()">+</div>
+    
+    <div class="dropdown" id="dropdown">
+        <a href="#">Opción 1</a>
+        <a href="#">Opción 2</a>
+        <a href="#">Opción 3</a>
+    </div>
+
+    <script>
+        // Función para abrir y cerrar el desplegable
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
