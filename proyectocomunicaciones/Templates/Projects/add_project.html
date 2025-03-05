@@ -1,0 +1,10 @@
+{% extends 'Proyectos.html' %}
+
+{% block content %}
+    <h2>Añadir Proyecto</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Añadir Proyecto</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'Proyectos.html' %}
+
+{% block content %}
+    <h2>Tareas de Proyecto: {{ proyecto.titulo }}</h2>
+    <ul>
+        {% for tarea in tareas %}
+            <li>{{ tarea.titulo }} - Estado: {{ tarea.estado }}</li>
+        {% empty %}
+            <li>No hay tareas asignadas a este proyecto.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
