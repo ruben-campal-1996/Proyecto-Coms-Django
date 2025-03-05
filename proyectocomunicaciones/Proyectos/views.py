@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Proyecto
+from .forms import ProyectoForm
 from Tareas.models import Tarea
 from UsersAutentication.models import Usuario
 from django.contrib.auth.decorators import login_required
@@ -30,22 +31,29 @@ def proyectos(request):
     
     return render(request, 'proyectos/Proyectos.html', {'proyectos_recientes': proyectos_asignados})
 
-# Vista para crear un proyecto (solo para administradores)
 @login_required
 def crear_proyecto(request):
+    # Verificar si el usuario es administrador
     if not request.user.is_staff:
         return redirect('proyectos:proyectos')  # Redirige si no es administrador
 
     if request.method == 'POST':
+        # Crear el formulario solo para el proyecto
         form = ProyectoForm(request.POST)
+
         if form.is_valid():
-            form.save()  # Guarda el nuevo proyecto en la base de datos
-            return redirect('proyectos:proyectos')  # Redirige a la lista de proyectos
+            # Guardamos el proyecto
+            form.save()
+
+            # Redirigir a la página de proyectos después de guardar
+            return redirect('proyectos:proyectos')
 
     else:
+        # Si es un GET, mostramos el formulario vacío para el proyecto
         form = ProyectoForm()
 
-    return render(request, 'proyectos/add_project.html', {'form': form})
+    return render(request, 'Projects/add_project.html', {'form': form})
+
 
 @login_required
 def editar_proyecto(request, id):

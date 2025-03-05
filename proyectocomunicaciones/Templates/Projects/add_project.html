@@ -1,4 +1,4 @@
-{% extends 'Proyectos.html' %}
+{% extends 'MainPage/Proyectos.html' %}
 
 {% block header %}
     <h1>Crear Nuevo Proyecto</h1>
@@ -7,8 +7,12 @@
 {% block content %}
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        
+        <h2>Crear Proyecto</h2>
+        {{ form.as_p }}  <!-- Formulario del Proyecto -->
+        
         <button type="submit" class="btn">Crear Proyecto</button>
     </form>
-    <a href="{% url 'proyectos:proyectos' %}" class="btn">Volver a los proyectos</a>
 {% endblock %}
+
+

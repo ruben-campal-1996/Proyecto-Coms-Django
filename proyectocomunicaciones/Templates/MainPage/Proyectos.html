@@ -9,11 +9,7 @@
 <body>
     <!-- Banda superior con botones -->
     <div class="top-band">
-        <div class="button-container">
-            <a href="/proyectos" class="btn">Proyectos</a>
-            <a href="/tareas" class="btn">Tareas</a>
-            <a href="/mi-perfil" class="btn">Mi perfil</a>
-        </div>
+        
     </div>
 
     <header>
@@ -56,16 +52,15 @@
         </section>
     {% endif %}
 
-    <footer>
-        <p>&copy; 2025 Seegson, todos los derechos reservados.</p>
-    </footer>
-
     <section>
         {% block content %}
             <!-- Este bloque será sobrescrito en las vistas extendidas -->
         {% endblock %}
     </section>
 
+    <footer>
+        <p>&copy; 2025 Seegson, todos los derechos reservados.</p>
+    </footer>
     <script>
         // Función para abrir y cerrar el menú desplegable de administración
         function toggleAdminOptions() {
