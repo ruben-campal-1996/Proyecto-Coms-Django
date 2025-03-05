@@ -1,10 +1,14 @@
 {% extends 'Proyectos.html' %}
 
+{% block header %}
+    <h1>Crear Nuevo Proyecto</h1>
+{% endblock %}
+
 {% block content %}
-    <h2>Añadir Proyecto</h2>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Añadir Proyecto</button>
+        <button type="submit" class="btn">Crear Proyecto</button>
     </form>
+    <a href="{% url 'proyectos:proyectos' %}" class="btn">Volver a los proyectos</a>
 {% endblock %}

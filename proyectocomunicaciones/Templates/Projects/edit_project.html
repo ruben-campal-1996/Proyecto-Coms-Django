@@ -1,10 +1,45 @@
 {% extends 'Proyectos.html' %}
 
-{% block content %}
-    <h2>Editar Proyecto: {{ proyecto.titulo }}</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Guardar Cambios</button>
-    </form>
+{% block header %}
+    <h1>Bienvenido a la sección de Proyectos</h1>
 {% endblock %}
+
+{% block content %}
+    <section>
+        <h2>Proyectos Asignados</h2>
+        <div class="box">
+            <ul>
+                {% if proyectos_recientes %}
+                    {% for proyecto in proyectos_recientes %}
+                        <li>
+                            <strong>{{ proyecto.titulo }}</strong><br>
+                            <span>{{ proyecto.descripcion }}</span><br>
+                            <em>Fecha inicio: {{ proyecto.fecha_inicio }} | Fecha finalización: {{ proyecto.fecha_finalizacion }}</em><br>
+                            {% if user.is_staff %}
+                                <!-- Aseguramos que el enlace a editar incluya el ID del proyecto -->
+                                <a href="{% url 'proyectos:edit_project' id=proyecto.id %}" class="btn">Editar Proyecto</a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li>No tienes proyectos asignados actualmente.</li>
+                {% endif %}
+            </ul>
+        </div>
+    </section>
+
+    <!-- Mostrar el botón de administración solo para administradores -->
+    {% if user.is_staff %}
+        <section>
+            <button class="btn" onclick="toggleAdminOptions()">Opciones Administrativas</button>
+            <div id="adminOptions" class="dropdown" style="display: none;">
+                <a href="{% url 'proyectos:add_project' %}">Crear Proyecto</a>
+                <!-- Solo mostrará "Editar Proyecto" si existen proyectos -->
+                {% if proyectos_recientes %}
+                    <a href="{% url 'proyectos:edit_project' id=proyecto.id %}" class="btn">Editar Proyecto</a>
+                {% endif %}
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}
+

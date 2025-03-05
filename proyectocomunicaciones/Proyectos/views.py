@@ -5,7 +5,7 @@ from UsersAutentication.models import Usuario
 from django.contrib.auth.decorators import login_required
 
 
-
+#Recuadros con la información pertinente.
 @login_required
 def proyectos_view(request):
     # Obtener los 5 proyectos más recientes
@@ -23,7 +23,46 @@ def proyectos_view(request):
     
     return render(request, 'Proyectos.html', context)
 
+@login_required
+def proyectos(request):
+    # Obtener los proyectos asignados al usuario
+    proyectos_asignados = Proyecto.objects.filter(usuarios_asignados=request.user)  # Suponiendo que 'usuarios_asignados' es un campo en el modelo Proyecto.
+    
+    return render(request, 'proyectos/Proyectos.html', {'proyectos_recientes': proyectos_asignados})
 
+# Vista para crear un proyecto (solo para administradores)
+@login_required
+def crear_proyecto(request):
+    if not request.user.is_staff:
+        return redirect('proyectos:proyectos')  # Redirige si no es administrador
+
+    if request.method == 'POST':
+        form = ProyectoForm(request.POST)
+        if form.is_valid():
+            form.save()  # Guarda el nuevo proyecto en la base de datos
+            return redirect('proyectos:proyectos')  # Redirige a la lista de proyectos
+
+    else:
+        form = ProyectoForm()
+
+    return render(request, 'proyectos/add_project.html', {'form': form})
+
+@login_required
+def editar_proyecto(request, id):
+    if not request.user.is_staff:
+        return redirect('proyectos:proyectos')  # Redirige si no es administrador
+    
+    proyecto = get_object_or_404(Proyecto, pk=1)
+
+    if request.method == 'POST':
+        form = ProyectoForm(request.POST, instance=proyecto)
+        if form.is_valid():
+            form.save()  # Guarda los cambios del proyecto
+            return redirect('proyectos:proyectos')  # Redirige a la lista de proyectos
+    else:
+        form = ProyectoForm(instance=proyecto)
+
+    return render(request, 'proyectos/edit_project.html', {'form': form, 'proyecto': proyecto})
 
 
 # Vista para redirigir a Proyectos.html
