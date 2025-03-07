@@ -4,9 +4,9 @@ from . import views
 app_name= 'proyectos'
 
 urlpatterns = [
-    path('proyectos', views.proyectos, name='proyectos'),  
+    path('proyectos', views.proyectos, name='proyectos'),  # Cambiado de 'proyectos' a ''
     path('tareas/', views.tareas, name='tareas'),
     path('mi-perfil/', views.mi_perfil, name='mi_perfil'),
-    path('add-project/', views.crear_proyecto, name='add_project'),  # Vista para crear proyecto
-    path('editar/', views.editar_proyecto, name='edit_project'),  # Vista para editar proyecto
+    path('add_project/', views.crear_proyecto, name='add_project'),
+    path('edit_project/<int:id>/', views.editar_proyecto, name='edit_project'),
 ]

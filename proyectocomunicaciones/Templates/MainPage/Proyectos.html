@@ -4,12 +4,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyectos - Seegson</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Banda superior */
+        .top-band {
+            width: 100vw;
+            height: 50px;
+            background-color: #333;
+            color: white;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            padding-right: 20px;
+        }
+        .top-band .button-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .btn {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #444;
+            border-color: #666;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding-top: 70px;
+        }
+        header {
+            padding: 20px;
+            text-align: center;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .box {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 20px;
+        }
+        .dropdown {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            z-index: 1000;
+        }
+        .dropdown a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+        .dropdown a:hover {
+            background-color: #f0f0f0;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
     <!-- Banda superior con botones -->
     <div class="top-band">
-        
+        <div class="button-container">
+            <a href="{% url 'proyectos:proyectos' %}" class="btn">Proyectos</a>
+            <a href="{% url 'proyectos:tareas' %}" class="btn">Tareas</a>
+            <a href="{% url 'proyectos:mi_perfil' %}" class="btn">Mi perfil</a>
+            <a href="{% url 'Seegson' %}" class="btn">Volver a Seegson</a>
+        </div>
     </div>
 
     <header>
@@ -28,7 +121,6 @@
                             <span>{{ proyecto.descripcion }}</span><br>
                             <em>Fecha inicio: {{ proyecto.fecha_inicio }} | Fecha finalización: {{ proyecto.fecha_finalizacion }}</em><br>
                             {% if user.is_staff %}
-                                <!-- Aseguramos que el enlace a editar incluya el ID del proyecto -->
                                 <a href="{% url 'proyectos:edit_project' id=proyecto.id %}" class="btn">Editar Proyecto</a>
                             {% endif %}
                         </li>
@@ -38,16 +130,15 @@
                 {% endif %}
             </ul>
         </div>
-
     </section>
 
     <!-- Mostrar el botón de administración solo para administradores -->
-    {% if user.is_staff %}
+    {% if request.user.usuario.rol == 'administrador' %}
         <section>
             <button class="btn" onclick="toggleAdminOptions()">Opciones Administrativas</button>
             <div id="adminOptions" class="dropdown" style="display: none;">
                 <a href="{% url 'proyectos:add_project' %}">Crear Proyecto</a>
-                <a href="{% url 'proyectos:edit_project' %}">Editar Proyecto</a> 
+                <!-- La opción de editar se manejará por proyecto individual -->
             </div>
         </section>
     {% endif %}
@@ -59,10 +150,10 @@
     </section>
 
     <footer>
-        <p>&copy; 2025 Seegson, todos los derechos reservados.</p>
+        <p>© 2025 Seegson, todos los derechos reservados.</p>
     </footer>
+
     <script>
-        // Función para abrir y cerrar el menú desplegable de administración
         function toggleAdminOptions() {
             const adminOptions = document.getElementById('adminOptions');
             adminOptions.style.display = adminOptions.style.display === 'block' ? 'none' : 'block';
