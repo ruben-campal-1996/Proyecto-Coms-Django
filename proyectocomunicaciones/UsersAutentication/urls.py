@@ -8,4 +8,6 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),  # Página de login
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),  # Vista de logout de Django
     path('Seegson/', views.seegson_view, name='Seegson'),
+    path('admin/create-user/', views.admin_create_user, name='admin_create_user'),
+    path('admin/manage-users/', views.admin_manage_users, name='admin_manage_users'),
 ]

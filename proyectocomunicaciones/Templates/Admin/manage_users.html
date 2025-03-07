@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Gestionar usuarios</h2>
+<table>
+    <tr>
+        <th>Usuario</th>
+        <th>Rol actual</th>
+        <th>Cambiar rol</th>
+    </tr>
+    {% for usuario in usuarios %}
+    <tr>
+        <td>{{ usuario.user.username }}</td>
+        <td>{{ usuario.rol }}</td>
+        <td>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{ usuario.user.id }}">
+                <select name="rol">
+                    {% for rol_value, rol_name in roles %}
+                        <option value="{{ rol_value }}" {% if usuario.rol == rol_value %}selected{% endif %}>
+                            {{ rol_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Actualizar</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% if messages %}
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+{% endif %}
+{% endblock %}

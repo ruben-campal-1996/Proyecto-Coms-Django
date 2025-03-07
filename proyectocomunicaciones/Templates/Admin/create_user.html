@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Crear nuevo usuario</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <label for="rol">Rol:</label>
+    <select name="rol" id="rol">
+        {% for rol_value, rol_name in roles %}
+            <option value="{{ rol_value }}">{{ rol_name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Crear usuario</button>
+</form>
+{% if messages %}
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+{% endif %}
+{% endblock %}
