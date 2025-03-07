@@ -7,107 +7,67 @@
     <style>
         /* Banda superior */
         .top-band {
-            width: 100vw; /* Usa el ancho completo de la pantalla */
+            width: 100vw;
             height: 50px;
-            background-color: #333; /* Color oscuro */
+            background-color: #333;
             color: white;
             display: flex;
-            justify-content: flex-end; /* Alinea los botones a la derecha */
+            justify-content: flex-end;
             align-items: center;
-            position: fixed; /* Fija la banda en la parte superior */
-            top: 0; /* Alinea con la parte superior de la pantalla */
+            position: fixed;
+            top: 0;
             left: 0;
-            z-index: 1000; /* Asegura que esté por encima del resto del contenido */
-            padding-right: 20px; /* Espacio adicional a la derecha */
+            z-index: 1000;
+            padding-right: 20px;
         }
 
         .top-band .button-container {
             display: flex;
-            justify-content: flex-end; /* Alinea los botones hacia la derecha */
+            justify-content: flex-end;
             align-items: center;
         }
 
         .top-band .btn {
-            background-color: #333; /* Fondo oscuro como la banda */
+            background-color: #333;
             color: white;
             padding: 10px 20px;
-            margin: 0 10px; /* Espacio entre los botones */
-            border: 1px solid #555; /* Borde ligeramente más claro */
+            margin: 0 10px;
+            border: 1px solid #555;
             border-radius: 5px;
             cursor: pointer;
-            text-decoration: none; /* Elimina subrayado */
+            text-decoration: none;
             font-size: 16px;
         }
 
         .top-band .btn:hover {
-            background-color: #444; /* Fondo ligeramente más claro al pasar el mouse */
-            border-color: #666; /* Cambio de borde al pasar el mouse */
+            background-color: #444;
+            border-color: #666;
         }
 
-        /* Asegura que el contenido principal no se superponga a la banda */
         body {
-            padding-top: 70px; /* Añade espacio suficiente para que no se superponga la banda negra */
+            padding-top: 70px;
         }
 
-        /* Recuadros de Proyectos y Tareas */
-        .box {
-            width: 45%;
-            margin: 20px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            background-color: #f9f9f9;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .container {
+        /* Estilo para el header */
+        header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            padding: 20px;
         }
 
-        /* Estilo para la burbuja */
-        .bubble {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background-color: #007BFF;
+        header nav button {
+            background-color: #333;
             color: white;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 50px;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Desplegable */
-        .dropdown {
-            display: none;
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            width: 200px;
-            background-color: white;
-            border: 1px solid #ccc;
+            padding: 10px 20px;
+            border: 1px solid #555;
             border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            z-index: 1000;
+            cursor: pointer;
         }
 
-        .dropdown a {
-            display: block;
-            padding: 10px;
-            text-decoration: none;
-            color: #333;
-            border-bottom: 1px solid #ccc;
+        header nav button:hover {
+            background-color: #444;
         }
-
-        .dropdown a:hover {
-            background-color: #f0f0f0;
-        }
-
     </style>
 </head>
 <body>
@@ -123,14 +83,17 @@
     <header>
         <h1>Bienvenido a Seegson, {{ username }}!</h1>
         <nav>
-            <form action="{% url 'logout' %}" method="POST">
+            {% if request.user.usuario.rol == 'administrador' %}
+                <a href="{% url 'admin_manage_users' %}" class="btn">Gestión de usuarios</a>
+            {% endif %}
+            <form action="{% url 'logout' %}" method="POST" style="display:inline;">
                 {% csrf_token %}
                 <button type="submit">Cerrar sesión</button>
             </form>
         </nav>
     </header>
 
-    <!-- Recuadros para Proyectos y Tareas -->
+    <!-- Resto del contenido -->
     <section class="container">
         <div class="box">
             <h3>Proyectos</h3>
@@ -143,12 +106,11 @@
     </section>
 
     <footer>
-        <p>&copy; 2025 Seegson, todos los derechos reservados.</p>
+        <p>© 2025 Seegson, todos los derechos reservados.</p>
     </footer>
 
     <!-- Burbuja desplegable -->
     <div class="bubble" onclick="toggleDropdown()">+</div>
-    
     <div class="dropdown" id="dropdown">
         <a href="#">Opción 1</a>
         <a href="#">Opción 2</a>
@@ -156,7 +118,6 @@
     </div>
 
     <script>
-        // Función para abrir y cerrar el desplegable
         function toggleDropdown() {
             const dropdown = document.getElementById('dropdown');
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
@@ -164,10 +125,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-

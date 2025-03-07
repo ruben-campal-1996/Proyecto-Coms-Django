@@ -1,16 +1,16 @@
 {% extends 'admin/manage_users.html' %}
 
 {% block content %}
-<h3>Crear nuevo usuario</h3>
+<h3>Editar usuario: {{ usuario.user.username }}</h3>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <label for="rol">Rol:</label>
     <select name="rol" id="rol">
         {% for rol, nombre in roles %}
-            <option value="{{ rol }}">{{ nombre }}</option>
+            <option value="{{ rol }}" {% if usuario.rol == rol %}selected{% endif %}>{{ nombre }}</option>
         {% endfor %}
     </select>
-    <button type="submit">Crear usuario</button>
+    <button type="submit">Guardar cambios</button>
 </form>
 {% endblock %}

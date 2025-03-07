@@ -10,4 +10,5 @@ urlpatterns = [
     path('Seegson/', views.seegson_view, name='Seegson'),
     path('admin/create-user/', views.admin_create_user, name='admin_create_user'),
     path('admin/manage-users/', views.admin_manage_users, name='admin_manage_users'),
+    path('admin/edit-user/<int:user_id>/', views.admin_edit_user, name='admin_edit_user'),
 ]

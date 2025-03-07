@@ -17,18 +17,16 @@ def seegson_view(request):
 def index(request):
     return render(request, 'index.html')
 
-# Registro de usuarios (sin creación manual de Usuario)
+# Registro de usuarios
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()  # Crea el usuario en auth_user
-            # Las señales ya crean el perfil Usuario con rol 'invitado'
+            user = form.save()
             messages.success(request, 'Cuenta creada con éxito. ¡Ya puedes iniciar sesión!')
             return redirect('login')
     else:
         form = CustomUserCreationForm()
-
     return render(request, 'registration/register.html', {'form': form})
 
 # Login
@@ -36,11 +34,9 @@ def login_view(request):
     if request.method == 'POST':
         username_or_email = request.POST.get('username_or_email')
         password = request.POST.get('password')
-
         if not username_or_email or not password:
             messages.error(request, "Por favor, ingrese tanto el nombre de usuario/correo como la contraseña.")
             return redirect('login')
-
         user = None
         if '@' in username_or_email:
             try:
@@ -49,14 +45,12 @@ def login_view(request):
                 user = None
         else:
             user = User.objects.filter(username=username_or_email).first()
-
         if user and user.check_password(password):
             login(request, user)
             messages.success(request, "Bienvenido de nuevo!")
-            return redirect('Seegson')
+            return redirect('Seegson')  # Sin prefijo 'perfil/'
         else:
             messages.error(request, "Nombre de usuario o correo electrónico y/o contraseña incorrectos")
-
     return render(request, 'registration/login.html')
 
 # Logout
@@ -69,43 +63,54 @@ def logout_view(request):
 def admin_create_user(request):
     if request.user.usuario.rol != 'administrador':
         messages.error(request, "No tienes permiso para acceder a esta página.")
-        return redirect('seegson_view')
-
+        return redirect('Seegson')  # Sin prefijo 'perfil/'
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
-        rol = request.POST.get('rol')  # El administrador elige el rol
+        rol = request.POST.get('rol')
         if form.is_valid() and rol in dict(Usuario.ROLES):
             user = form.save()
-            Usuario.objects.create(user=user, rol=rol)  # Asigna el rol elegido
+            usuario, created = Usuario.objects.get_or_create(user=user, defaults={'rol': rol})
+            if not created:
+                usuario.rol = rol
+                usuario.save()
             messages.success(request, f"Usuario {user.username} creado con éxito.")
             return redirect('admin_manage_users')
     else:
         form = CustomUserCreationForm()
-
     return render(request, 'admin/create_user.html', {'form': form, 'roles': Usuario.ROLES})
 
-# Vista para administradores: Gestionar roles de usuarios
+# Vista para administradores: Gestionar usuarios
 @login_required
 def admin_manage_users(request):
     if request.user.usuario.rol != 'administrador':
         messages.error(request, "No tienes permiso para acceder a esta página.")
-        return redirect('seegson_view')
-
-    if request.method == 'POST':
-        user_id = request.POST.get('user_id')
-        new_rol = request.POST.get('rol')
-        try:
-            usuario = Usuario.objects.get(user__id=user_id)
-            if new_rol in dict(Usuario.ROLES):
-                usuario.rol = new_rol
-                usuario.save()
-                messages.success(request, f"Rol de {usuario.user.username} actualizado a {new_rol}.")
-            else:
-                messages.error(request, "Rol no válido.")
-        except Usuario.DoesNotExist:
-            messages.error(request, "Usuario no encontrado.")
-        return redirect('admin_manage_users')
-
-    usuarios = Usuario.objects.all()  # Lista de todos los usuarios
+        return redirect('Seegson')  # Sin prefijo 'perfil/'
+    usuarios = Usuario.objects.filter(user__is_superuser=False)
     return render(request, 'admin/manage_users.html', {'usuarios': usuarios, 'roles': Usuario.ROLES})
 
+# Vista para administradores: Editar usuarios
+@login_required
+def admin_edit_user(request, user_id):
+    if request.user.usuario.rol != 'administrador':
+        messages.error(request, "No tienes permiso para acceder a esta página.")
+        return redirect('Seegson')  # Sin prefijo 'perfil/'
+    try:
+        usuario = Usuario.objects.get(user__id=user_id)
+    except Usuario.DoesNotExist:
+        messages.error(request, "Usuario no encontrado.")
+        return redirect('admin_manage_users')
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST, instance=usuario.user)
+        rol = request.POST.get('rol')
+        if form.is_valid() and rol in dict(Usuario.ROLES):
+            user = form.save(commit=False)
+            if 'password1' in form.cleaned_data and form.cleaned_data['password1']:  # Actualizar contraseña si se proporciona
+                user.set_password(form.cleaned_data['password1'])
+            user.save()
+            usuario.rol = rol
+            usuario.save()
+            messages.success(request, f"Usuario {user.username} actualizado con éxito.")
+            return redirect('admin_manage_users')
+    else:
+        form = CustomUserCreationForm(instance=usuario.user)
+    return render(request, 'admin/edit_user.html', {'form': form, 'usuario': usuario, 'roles': Usuario.ROLES})
